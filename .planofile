@@ -2,7 +2,7 @@
 CYGWIN = call("uname").startswith("CYGWIN")
 
 @command
-def test(app, shell="sh", verbose=False, debug=False):
+def test(shell="sh", verbose=False, debug=False):
     if not CYGWIN:
         check_program(shell)
 
@@ -22,9 +22,13 @@ def test(app, shell="sh", verbose=False, debug=False):
             del ENV["DEBUG"]
 
 @command
-def big_test(app, verbose=False, debug=False):
-    test(app, verbose=verbose, debug=True)
-    test(app, verbose=verbose, debug=False)
+def big_test(verbose=False, debug=False):
+    """
+    Run the tests on a range of different shells
+    """
+
+    test(verbose=verbose, debug=True)
+    test(verbose=verbose, debug=False)
 
     for shell in "ash", "bash", "dash", "ksh", "mksh", "yash", "zsh":
         if CYGWIN or not which(shell):
@@ -33,11 +37,15 @@ def big_test(app, verbose=False, debug=False):
         test(app, shell=shell, verbose=verbose, debug=debug)
 
 @command
-def lint(app):
+def lint():
+    """
+    Use shellcheck to scan for problems
+    """
+
     check_program("shellcheck")
 
-    run("shellcheck --enable all --exclude SC3043 burly.sh")
+    run("shellcheck --shell sh --enable all --exclude SC3043 burly.sh")
 
 @command
-def clean(app):
+def clean():
     remove("build")
