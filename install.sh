@@ -18,6 +18,9 @@
 # under the License.
 #
 
+echo $PWD
+ls -l
+
 . burly.sh
 
 main() {

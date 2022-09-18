@@ -1,6 +1,3 @@
-# XXX For the which problem
-CYGWIN = call("uname").startswith("CYGWIN")
-
 @command
 def test(coverage=False):
     check_program("bats")

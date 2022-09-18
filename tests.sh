@@ -89,7 +89,7 @@
 @test install_script_ash {
     if ! command -v ash
     then
-        skip "Shell ash is not available"
+        skip "ash is not available"
     fi
 
     ash install.sh
@@ -98,7 +98,7 @@
 @test install_script_bash {
     if ! command -v bash
     then
-        skip "Shell bash is not available"
+        skip "bash is not available"
     fi
 
     bash install.sh
@@ -107,7 +107,7 @@
 @test install_script_dash {
     if ! command -v dash
     then
-        skip "Shell dash is not available"
+        skip "dash is not available"
     fi
 
     dash install.sh
@@ -118,7 +118,7 @@
 
     if ! command -v ksh
     then
-        skip "Shell ksh is not available"
+        skip "ksh is not available"
     fi
 
     ksh install.sh
@@ -127,7 +127,7 @@
 @test install_script_mksh {
     if ! command -v mksh
     then
-        skip "Shell mksh is not available"
+        skip "mksh is not available"
     fi
 
     mksh install.sh
@@ -136,7 +136,7 @@
 @test install_script_yash {
     if ! command -v yash
     then
-        skip "Shell yash is not available"
+        skip "yash is not available"
     fi
 
     yash install.sh
@@ -145,7 +145,7 @@
 @test install_script_zsh {
     if ! command -v zsh
     then
-        skip "Shell zsh is not available"
+        skip "zsh is not available"
     fi
 
     zsh install.sh
