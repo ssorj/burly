@@ -2,39 +2,15 @@
 CYGWIN = call("uname").startswith("CYGWIN")
 
 @command
-def test(shell="sh", verbose=False, debug=False):
-    if not CYGWIN:
-        check_program(shell)
+def test(coverage=False):
+    check_program("bats")
 
-    burly_sh = read("burly.sh")
-    install_sh_in = read("install.sh.in")
-    install_sh = replace(install_sh_in, "@burly@", burly_sh)
+    if coverage:
+        check_program("kcov")
 
-    write("build/install.sh", install_sh)
-
-    if debug:
-        ENV["DEBUG"] = "1"
-
-    try:
-        run(f"{shell} build/install.sh".strip())
-    finally:
-        if debug:
-            del ENV["DEBUG"]
-
-@command
-def big_test(verbose=False, debug=False):
-    """
-    Run the tests on a range of different shells
-    """
-
-    test(verbose=verbose, debug=True)
-    test(verbose=verbose, debug=False)
-
-    for shell in "ash", "bash", "dash", "ksh", "mksh", "yash", "zsh":
-        if CYGWIN or not which(shell):
-            continue
-
-        test(app, shell=shell, verbose=verbose, debug=debug)
+        run(f"kcov {get_current_dir()}/coverage bats tests.sh")
+    else:
+        run(f"bats tests.sh")
 
 @command
 def lint():
@@ -49,3 +25,4 @@ def lint():
 @command
 def clean():
     remove("build")
+    remove("coverage")

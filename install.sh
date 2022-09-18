@@ -18,7 +18,7 @@
 # under the License.
 #
 
-@burly@
+. burly.sh
 
 main() {
     enable_strict_mode
@@ -28,7 +28,6 @@ main() {
         enable_debug_mode
     fi
 
-    # XXX Add an option for verbose mode
     local verbose=
 
     local artemis_bin_dir="${HOME}/.local/bin"

@@ -20,7 +20,7 @@ then
 fi
 
 # This is required to preserve the Windows drive letter in the
-# path to HOME.
+# path to HOME
 case "$(uname)" in
     CYGWIN*)
         HOME="$(cygpath --mixed --windows "${HOME}")"
@@ -215,6 +215,14 @@ fail() {
     suppress_trouble_report=1
 
     exit 1
+}
+
+generate_password() {
+    assert test -e /dev/urandom
+    assert program_is_available head
+    assert program_is_available tr
+
+    head -c 1024 /dev/urandom | LC_ALL=C tr -dc 'a-z0-9' | head -c 16
 }
 
 enable_strict_mode() {
@@ -561,12 +569,4 @@ save_backup() {
     done
 
     assert test -d "${backup_dir}"
-}
-
-generate_password() {
-    assert test -e /dev/urandom
-    assert program_is_available head
-    assert program_is_available tr
-
-    head -c 1024 /dev/urandom | LC_ALL=C tr -dc 'a-z0-9' | head -c 16
 }
