@@ -1,6 +1,7 @@
 @command
 def test(coverage=False):
-    check_program("bats")
+    if not WINDOWS:
+        check_program("bats")
 
     if coverage:
         check_program("kcov")
