@@ -20,10 +20,12 @@ jobs:
       - uses: cygwin/cygwin-install-action@master
         with:
           packages: nc
-      - shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
-        run: |
+      - run: >-
           git clone https://github.com/bats-core/bats-core.git
-          (cd bats-core && ./install.sh $HOME)
+          cd bats-core
+          ./install.sh $HOME
+          cd ..
+        shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
       - run: python plano test
   fedora:
     runs-on: ubuntu-latest
