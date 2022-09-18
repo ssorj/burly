@@ -8,7 +8,7 @@ def test(coverage=False):
 
         run(f"kcov {get_current_dir()}/coverage bats tests.sh")
     else:
-        run(f"bats tests.sh")
+        run(f"bats tests.sh", shell=True)
 
 @command
 def lint():
