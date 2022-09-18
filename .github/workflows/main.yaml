@@ -21,7 +21,6 @@ jobs:
         with:
           packages: nc
       - run: bash scripts/install-bats.sh
-      - run: echo "$HOME/bin" >> "$GITHUB_PATH"
       - run: python plano test
   fedora:
     runs-on: ubuntu-latest
