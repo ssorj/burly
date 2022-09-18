@@ -21,7 +21,7 @@
 echo $PWD
 ls -l
 
-. burly.sh
+. ./burly.sh
 
 main() {
     enable_strict_mode
