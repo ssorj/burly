@@ -1,33 +1,35 @@
 #!/usr/bin/bats
 
-@test program_is_available {
+@test program_functions {
     source burly.sh
 
     program_is_available cat
     ! program_is_available not-there
 }
 
-# @test port_is_active {
-# }
+@test port_functions {
+    source burly.sh
 
-# @test await_port_is_active {
-# }
+    ncat --chat --listen localhost 55552 &
+    trap "kill $!" EXIT
 
-# @test await_port_is_free {
-# }
+    await_port_is_active 55552
+    await_port_is_free 55553
+}
 
-@test string_is_match {
+@test string_functions {
     source burly.sh
 
     string_is_match a a
     string_is_match a a\*
     string_is_match a \*
+    string_is_match a \?
     ! string_is_match a b
     ! string_is_match a b\*
     ! string_is_match a a\?
 }
 
-@test random_number {
+@test generate_functions {
     source burly.sh
 
     first=$(random_number)
@@ -35,16 +37,18 @@
     second=$(random_number)
 
     [ "$first" != "$second" ]
+
+    generate_password
 }
 
-@test extract_archive {
+@test archive_functions {
     source burly.sh
 
     input_dir=$(mktemp -d)
     output_dir=$(mktemp -d)
 
     mkdir "${input_dir}/archive"
-    echo "Hello" > "${input_dir}/archive/hello.txt"
+    echo "hello" > "${input_dir}/archive/hello.txt"
 
     (
         cd "$input_dir"
@@ -54,99 +58,70 @@
 
     extract_archive "${input_dir}/archive.tar.gz" "$output_dir"
 
-    [ $(cat "${output_dir}/archive/hello.txt") == "Hello" ]
+    [ $(cat "${output_dir}/archive/hello.txt") == "hello" ]
 }
 
-@test assert {
+@test script_init_functions {
     source burly.sh
 
-    assert true
+    enable_strict_mode
+
+    init_logging $(mktemp) 1
+
+    {
+        :
+    } >&6 2>&6
 }
 
 @test print_functions {
     source burly.sh
 
+    enable_strict_mode
+
+    init_logging $(mktemp) 1
+
     {
+        assert true
+
         log hello
+
         run echo hello
+
         print
         print -n hello
         print hello
         print $(red hello)
         print $(yellow hello)
         print $(green hello)
+
         print_section section1
         print_result result
-    } > /dev/null 3>&1
+    } 6> /dev/null >&6 2>&6
 }
 
-@test generate_password {
+@test check_functions {
     source burly.sh
 
-    generate_password
+    enable_strict_mode
+
+    init_logging $(mktemp) 1
+
+    {
+        check_writable_directories $HOME
+        check_required_programs cat
+        # check_required_program_sha512sum
+        check_required_ports 55555
+        check_required_network_resources https://example.net/
+        check_java
+    } >&6 2>&6
 }
 
-@test install_script_ash {
-    if ! command -v ash
-    then
-        skip "ash is not available"
-    fi
+@test save_backup {
+    source burly.sh
 
-    ash install.sh
-}
+    init_logging $(mktemp) 1
 
-@test install_script_bash {
-    if ! command -v bash
-    then
-        skip "bash is not available"
-    fi
-
-    bash install.sh
-}
-
-@test install_script_dash {
-    if ! command -v dash
-    then
-        skip "dash is not available"
-    fi
-
-    dash install.sh
-}
-
-@test install_script_ksh {
-    skip "Aliasing for local mysteriously breaks under test"
-
-    if ! command -v ksh
-    then
-        skip "ksh is not available"
-    fi
-
-    ksh install.sh
-}
-
-@test install_script_mksh {
-    if ! command -v mksh
-    then
-        skip "mksh is not available"
-    fi
-
-    mksh install.sh
-}
-
-@test install_script_yash {
-    if ! command -v yash
-    then
-        skip "yash is not available"
-    fi
-
-    yash install.sh
-}
-
-@test install_script_zsh {
-    if ! command -v zsh
-    then
-        skip "zsh is not available"
-    fi
-
-    zsh install.sh
+    {
+        save_backup $(mktemp -d) $(mktemp -d) $(mktemp -d) $(mktemp -d)
+    } >&6 2>&6
 }
