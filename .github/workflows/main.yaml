@@ -21,6 +21,7 @@ jobs:
         with:
           packages: nc
       - run: python plano test
+        shell: C:\tools\cygwin\bin\bash.exe --login --norc -eo pipefail -o igncr '{0}'
   fedora:
     runs-on: ubuntu-latest
     container: fedora:latest
