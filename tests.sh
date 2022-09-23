@@ -11,7 +11,7 @@
     source burly.sh
 
     ncat --chat --listen localhost 55552 &
-    trap "kill $!" EXIT
+    trap "kill $! || :" EXIT
 
     await_port_is_active 55552
     await_port_is_free 55553
