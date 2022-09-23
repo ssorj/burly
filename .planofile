@@ -10,9 +10,12 @@ def test(verbose=False, coverage=False):
         else:
             run(f"bats {'--trace' if verbose else ''} tests.sh")
 
-    for shell in "ash", "bash", "dash", "ksh", "mksh", "yash", "zsh":
-        if which(shell):
-            run(f"{shell} install.sh")
+    run("sh install.sh")
+
+    if not WINDOWS:
+        for shell in "ash", "bash", "dash", "ksh", "mksh", "yash", "zsh":
+            if which(shell):
+                run(f"{shell} install.sh")
 
 @command
 def lint():
