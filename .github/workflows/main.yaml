@@ -18,16 +18,17 @@ jobs:
         with:
           python-version: "3.x"
       - uses: cygwin/cygwin-install-action@master
+        with:
+          packages: nc
       - run: bash scripts/install-bats.sh
-      - run: ls "${HOME}/bin"
-      - run: echo "${HOME}/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - run: echo "/home/runneradmin/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - run: python plano test
   fedora:
     runs-on: ubuntu-latest
     container: fedora:latest
     steps:
       - uses: actions/checkout@v3
-      - run: dnf -y install bats busybox curl dash ksh mksh python /bin/ps sudo tar yash zsh java-17-openjdk-headless
+      - run: dnf -y install bats busybox curl dash ksh mksh nc python /bin/ps sudo tar yash zsh java-17-openjdk-headless
       - run: cd /usr/bin && ln -s busybox ash
       - run: ./plano test
   macos:
@@ -49,5 +50,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: apt-get -qq update
-      - run: apt-get -qq install bats curl python3 sudo openjdk-17-jre-headless
+      - run: apt-get -qq install bats curl netcat python3 sudo openjdk-17-jre-headless
       - run: ./plano test
