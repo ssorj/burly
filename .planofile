@@ -6,16 +6,16 @@ def test(verbose=False, coverage=False):
         if coverage:
             check_program("kcov")
 
-            run(f"kcov ~/coverage bats {'--trace' if verbose else ''} tests.sh")
+            run(f"kcov ~/coverage bats {'--trace' if verbose else ''} tests/main.sh")
         else:
-            run(f"bats {'--trace' if verbose else ''} tests.sh")
+            run(f"bats {'--trace' if verbose else ''} tests/main.sh")
 
-    run("sh install.sh")
+    run("sh tests/install.sh")
 
     if not WINDOWS:
         for shell in "ash", "bash", "dash", "ksh", "mksh", "yash", "zsh":
             if which(shell):
-                run(f"{shell} install.sh")
+                run(f"{shell} tests/install.sh")
 
 @command
 def lint():
