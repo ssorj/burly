@@ -1,12 +1,14 @@
 @command
 def test(verbose=False, coverage=False):
-    if not WINDOWS:
-        check_program("bats")
+    if WINDOWS:
+        print(111, ENV.get("PATHEXT"))
+
+    check_program("bats")
 
     if coverage:
         check_program("kcov")
 
-        run(f"kcov {get_current_dir()}/coverage bats {'--trace' if verbose else ''} tests.sh")
+        run(f"kcov ~/coverage bats {'--trace' if verbose else ''} tests.sh")
     else:
         run(f"bats {'--trace' if verbose else ''} tests.sh")
 
