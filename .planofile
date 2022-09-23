@@ -1,14 +1,13 @@
 @command
 def test(verbose=False, coverage=False):
-    if not WINDOWS:
-        check_program("bats")
+    check_program("bash")
 
     if coverage:
         check_program("kcov")
 
         run(f"kcov ~/coverage bats {'--trace' if verbose else ''} tests.sh")
     else:
-        run(f"bats {'--trace' if verbose else ''} tests.sh")
+        run(f"bash bats {'--trace' if verbose else ''} tests.sh")
 
 @command
 def lint():
