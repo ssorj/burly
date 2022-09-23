@@ -18,8 +18,14 @@
 # under the License.
 #
 
-echo $PWD
-ls -l
+# Make the local keyword work with ksh93 and POSIX-style functions
+case "${KSH_VERSION:-}" in
+    *" 93"*)
+        alias local="typeset -x"
+        ;;
+    *)
+        ;;
+esac
 
 . ./burly.sh
 

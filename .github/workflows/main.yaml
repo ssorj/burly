@@ -20,8 +20,6 @@ jobs:
       - uses: cygwin/cygwin-install-action@master
         with:
           packages: nc
-      - run: bash scripts/install-bats.sh
-      # - run: echo "/home/runneradmin/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - run: python plano test
   fedora:
     runs-on: ubuntu-latest
