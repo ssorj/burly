@@ -10,11 +10,12 @@
 @test port_functions {
     source burly.sh
 
-    ncat --chat --listen localhost 55552 &
-    trap "kill $! || :" EXIT
+    # ncat --chat --listen localhost 55552 &
+    # trap "kill $! || :" EXIT
+    #
+    # await_port_is_active 55552
 
-    await_port_is_active 55552
-    await_port_is_free 55553
+    await_port_is_free 55555
 }
 
 @test string_functions {

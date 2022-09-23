@@ -1,9 +1,7 @@
 @command
 def test(verbose=False, coverage=False):
-    if WINDOWS:
-        print(111, ENV.get("PATHEXT"))
-
-    check_program("bats")
+    if not WINDOWS:
+        check_program("bats")
 
     if coverage:
         check_program("kcov")
